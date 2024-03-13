@@ -9,7 +9,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  DIST_FILE: build/fswatch/src/fswatch
+  DIST_FILE: ${{github.workspace}}/build/fswatch/src/fswatch
 
 jobs:
   build:
@@ -31,12 +31,6 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Test
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest -C ${{env.BUILD_TYPE}}
-
     - name: Upload package
       uses: actions/upload-artifact@v4
       if: startsWith(github.ref, 'refs/heads/main')
@@ -49,3 +43,10 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       with:
         files: ${{ env.DIST_FILE }}
+          
+    - name: Test
+      working-directory: ${{github.workspace}}/build
+      # Execute tests defined by the CMake configuration.
+      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+      run: ctest -C ${{env.BUILD_TYPE}}
+
