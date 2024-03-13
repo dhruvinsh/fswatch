@@ -33,7 +33,7 @@ jobs:
 
     - name: Upload package
       uses: actions/upload-artifact@v4
-      if: startsWith(github.ref, 'refs/heads/main')
+      if: startsWith(github.ref, 'refs/heads/master')
       with:
         name: fswatch
         path: ${{ env.DIST_FILE }}
